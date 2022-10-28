@@ -1,6 +1,8 @@
 [submodule "linux/source"]
 	path = linux/source
-	url = ../linux.git
+	url = https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git
+	branch = v4.3
 [submodule "qemu/source"]
 	path = qemu/source
-	url = ../qemu.git
+	url = https://gitlab.com/qemu-project/qemu
+	branch = stable-6.0
