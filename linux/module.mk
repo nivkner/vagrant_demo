@@ -9,7 +9,7 @@ MINOR_KERNEL_VERSION := 219
 KERNEL_VERSION := $(MAJOR_KERNEL_VERSION).$(MINOR_KERNEL_VERSION)
 # we can also extract the kernel version from the linux source tree via "cd linux && make kernelversion"
 # but this is problematic because $(LINUX_SOURCE_DIR) is empty right after "git clone"
-CUSTOM_KERNEL_NAME := custom
+CUSTOM_KERNEL_NAME := custom+
 LINUX_OFFICIAL_GIT_REPO := https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git
 
 ##### Targets (== files) #####
