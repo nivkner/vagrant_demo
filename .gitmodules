@@ -1,4 +1,0 @@
-[submodule "qemu/source"]
-	path = qemu/source
-	url = https://gitlab.com/qemu-project/qemu
-	branch = stable-6.0
