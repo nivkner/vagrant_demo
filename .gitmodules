@@ -1,0 +1,4 @@
+[submodule "linux/source"]
+	path = linux/source
+	url = https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git
+	branch = linux-4.3.y
