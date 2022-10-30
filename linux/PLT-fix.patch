@@ -1,0 +1,55 @@
+From 277ed899bc06fb204b9dbc9b07877db9b655b511 Mon Sep 17 00:00:00 2001
+From: Niv Kaminer <niv.kaminer@campus.technion.ac.il>
+Date: Sun, 30 Oct 2022 23:30:59 +0200
+Subject: [PATCH] x86: Treat R_X86_64_PLT32 as R_X86_64_PC32
+
+---
+ arch/x86/kernel/machine_kexec_64.c | 1 +
+ arch/x86/kernel/module.c           | 1 +
+ arch/x86/tools/relocs.c            | 3 +++
+ 3 files changed, 5 insertions(+)
+
+diff --git a/arch/x86/kernel/machine_kexec_64.c b/arch/x86/kernel/machine_kexec_64.c
+index 819ab3f9c9c7..ca6e65250b1a 100644
+--- a/arch/x86/kernel/machine_kexec_64.c
++++ b/arch/x86/kernel/machine_kexec_64.c
+@@ -519,6 +519,7 @@ int arch_kexec_apply_relocations_add(const Elf64_Ehdr *ehdr,
+ 				goto overflow;
+ 			break;
+ 		case R_X86_64_PC32:
++		case R_X86_64_PLT32:
+ 			value -= (u64)address;
+ 			*(u32 *)location = value;
+ 			break;
+diff --git a/arch/x86/kernel/module.c b/arch/x86/kernel/module.c
+index 005c03e93fc5..71019b5c9bbc 100644
+--- a/arch/x86/kernel/module.c
++++ b/arch/x86/kernel/module.c
+@@ -183,6 +183,7 @@ int apply_relocate_add(Elf64_Shdr *sechdrs,
+ 				goto overflow;
+ 			break;
+ 		case R_X86_64_PC32:
++		case R_X86_64_PLT32:
+ 			val -= (u64)loc;
+ 			*(u32 *)loc = val;
+ #if 0
+diff --git a/arch/x86/tools/relocs.c b/arch/x86/tools/relocs.c
+index 0c2fae8d929d..371b53f239d4 100644
+--- a/arch/x86/tools/relocs.c
++++ b/arch/x86/tools/relocs.c
+@@ -769,9 +769,12 @@ static int do_reloc64(struct section *sec, Elf_Rel *rel, ElfW(Sym) *sym,
+ 		break;
+ 
+ 	case R_X86_64_PC32:
++	case R_X86_64_PLT32:
+ 		/*
+ 		 * PC relative relocations don't need to be adjusted unless
+ 		 * referencing a percpu symbol.
++		 *
++		 * NB: R_X86_64_PLT32 can be treated as R_X86_64_PC32.
+ 		 */
+ 		if (is_percpu_sym(sym, symname))
+ 			add_reloc(&relocs32neg, offset);
+-- 
+2.25.1
+
