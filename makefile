@@ -4,6 +4,12 @@ SHELL := /bin/bash
 # invoke recipes as if the shell had been passed the -e flag: the first failing command in a recipe will cause the recipe to fail immediately
 .POSIX:
 
+# source the bash environment variables as global makefile variables
+BASH_ENVIRONMENT_VARIABLES := environment_variables.sh
+MAKEFILE_ENVIRONMENT_VARIABLES := environment_variables.mk
+# note the usage of "-" to prevent "make" from failing when the included file doesn't yet exist
+-include $(MAKEFILE_ENVIRONMENT_VARIABLES)
+
 #TODO: sync all branches (not just master) between upstream and origin
 define FETCH_UPSTREAM :=
 current_head=$$(git rev-parse HEAD)
@@ -37,6 +43,7 @@ $(FLAG): | $(SUBMODULES)
 clean: $(addsuffix /clean,$(SUBMODULES))
 	rm -rf $(FLAG)
 
+include software.mk
 include $(SUBMAKEFILES)
 
 # re-create the submakefile when this makefile is changed
