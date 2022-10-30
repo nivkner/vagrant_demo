@@ -75,7 +75,7 @@ $(LINUX_CONFIG): $(VANILLA_VM_LINUX_CONFIG) $(LINUX_MAKEFILE) | $(LINUX_BUILD_DI
 	yes '' | make O=$(LINUX_BUILD_DIR) oldconfig # sanitize the .config file
 
 $(LINUX_MAKEFILE):
-	git submodule update --init --progress linux
+	git submodule update --init linux
 
 # create the required directories when we need them (same recipe for multiple targets)
 $(LINUX_BUILD_DIR) $(LINUX_INSTALL_DIR):
