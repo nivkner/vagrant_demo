@@ -16,4 +16,7 @@ RUN git config --global --add safe.directory /opt/vagrant_demo/linux/source
 RUN mkdir /opt/vagrant_demo
 WORKDIR /opt/vagrant_demo
 
+# to avoid overriding VAGRANT_HOME on non-docker runs
+RUN mkdir /opt/vagrant_home
+ENV VAGRANT_HOME=/opt/vagrant_home
 CMD ["/usr/bin/make"]
