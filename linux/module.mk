@@ -38,7 +38,8 @@ $(INSTALLED_PERF_TOOL): $(PERF_TOOL)
 	sudo cp -f $< $@
 
 $(PERF_TOOL): $(LINUX_CONFIG)
-	$(MAKE_LINUX) tools/perf
+	echo "nothing"
+	#$(MAKE_LINUX) tools/perf
 
 $(INITRD): $(VMLINUZ)
 	cd $(VANILLA_VM_DIR)
