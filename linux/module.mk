@@ -4,24 +4,18 @@ LINUX_SOURCE_DIR := $(ROOT_DIR)/linux/source
 LINUX_BUILD_DIR := $(ROOT_DIR)/linux/build
 LINUX_INSTALL_DIR := $(ROOT_DIR)/linux/install
 # choose a specific linux kernel version with "cd linux/source && git checkout tags/v5.4"
-MAJOR_KERNEL_VERSION := 4.3
-MINOR_KERNEL_VERSION := 6
-KERNEL_VERSION := $(MAJOR_KERNEL_VERSION).$(MINOR_KERNEL_VERSION)
-# we can also extract the kernel version from the linux source tree via "cd linux && make kernelversion"
-# but this is problematic because $(LINUX_SOURCE_DIR) is empty right after "git clone"
-CUSTOM_KERNEL_NAME := custom+
 LINUX_OFFICIAL_GIT_REPO := https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git
 
 ##### Targets (== files) #####
 
 LINUX_MAKEFILE := $(LINUX_SOURCE_DIR)/Makefile
 LINUX_CONFIG := $(LINUX_BUILD_DIR)/.config
-LINUX_DEB_PACKAGE := $(LINUX_BUILD_DIR)/../linux-image-$(KERNEL_VERSION)-$(CUSTOM_KERNEL_NAME)_$(KERNEL_VERSION)-$(CUSTOM_KERNEL_NAME)-1_amd64.deb
+LINUX_DEB_PACKAGE := $(LINUX_BUILD_DIR)/../linux-image-$(LOCALVERSION)-1_amd64.deb
 BZIMAGE := $(LINUX_BUILD_DIR)/arch/x86/boot/bzImage
-VMLINUZ := $(LINUX_INSTALL_DIR)/vmlinuz-$(KERNEL_VERSION)-$(CUSTOM_KERNEL_NAME)
-INITRD := $(LINUX_INSTALL_DIR)/initrd.img-$(KERNEL_VERSION)-$(CUSTOM_KERNEL_NAME)
+VMLINUZ := $(LINUX_INSTALL_DIR)/vmlinuz-$(LOCALVERSION)
+INITRD := $(LINUX_INSTALL_DIR)/initrd.img-$(LOCALVERSION)
 PERF_TOOL := $(LINUX_BUILD_DIR)/tools/perf/perf
-INSTALLED_PERF_TOOL := /usr/lib/linux-tools/$(KERNEL_VERSION)-$(CUSTOM_KERNEL_NAME)/perf
+INSTALLED_PERF_TOOL := /usr/lib/linux-tools/$(LOCALVERSION)/perf
 
 ##### Scripts and commands #####
 
@@ -65,7 +59,7 @@ $(LINUX_CONFIG): $(VANILLA_VM_LINUX_CONFIG) $(LINUX_MAKEFILE) | $(LINUX_BUILD_DI
 	# change dir before calling the config script (it works only from the source dir)
 	cd $(LINUX_SOURCE_DIR)
 	# edit the config as you wish, e.g., set the kernel name:
-	./scripts/config --file $@ --set-str LOCALVERSION "-$(CUSTOM_KERNEL_NAME)"
+	./scripts/config --file $@ --set-str LOCALVERSION "-$(LOCALVERSION)"
 	# disable the kernel module signing facility. Learn more at:
 	# https://www.kernel.org/doc/html/v5.4/admin-guide/module-signing.html
 	# https://lists.debian.org/debian-kernel/2016/04/msg00579.html
