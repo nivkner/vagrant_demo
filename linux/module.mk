@@ -72,6 +72,7 @@ $(LINUX_CONFIG): $(VANILLA_VM_LINUX_CONFIG) $(LINUX_MAKEFILE) | $(LINUX_BUILD_DI
 	./scripts/config --file $@ --set-val SYSTEM_TRUSTED_KEYS ""
 	./scripts/config --file $@ --set-val MODULE_SIG_KEY ""
 	./scripts/config --file $@ --disable MODULE_SIG_ALL
+	./scripts/config --file $@ --disable CONFIG_LOCALVERSION_AUTO
 	yes '' | make O=$(LINUX_BUILD_DIR) oldconfig # sanitize the .config file
 
 $(LINUX_MAKEFILE):
