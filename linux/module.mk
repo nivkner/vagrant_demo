@@ -58,7 +58,9 @@ $(LINUX_DEB_PACKAGE): $(BZIMAGE)
 	$(MAKE_LINUX) bindeb-pkg
 
 $(BZIMAGE): $(LINUX_CONFIG) | $(linux_prerequisites)
-	git apply $(ROOT_DIR)/linux/PLT-fix.patch
+	cd $(LINUX_SOURCE_DIR)
+	git apply ../PLT-fix.patch
+	cd $(ROOT_DIR)
 	$(MAKE_LINUX)
 
 $(LINUX_CONFIG): $(VANILLA_VM_LINUX_CONFIG) $(LINUX_MAKEFILE) | $(LINUX_BUILD_DIR)
